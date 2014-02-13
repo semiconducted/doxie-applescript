@@ -14,9 +14,9 @@
 
 
 -- initialize the main variables and run
-set destinationFolder to "/Users/<username>/<yourpath>/"
-set myApp to "Doxie"
-set fName to "/Users/<username>/<yourpath>/" -- this was easier than dynamically pulling the folder name the script is attached to
+set destinationFolder to "/Users/<username>/<yourpath>/" -- where to save the files
+set myApp to "Doxie" - the app to call (in case of version name changes)
+set fName to "/Users/<username>/<yourpath>/" -- watch folder path that the script is attached to
 
 
 -- when triggered by a folder action, 
