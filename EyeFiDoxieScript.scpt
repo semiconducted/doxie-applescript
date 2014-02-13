@@ -15,7 +15,7 @@
 
 --***** change these variables to fit your needs *****
 set destinationFolder to "/Users/<username>/<yourpath>/" -- where to save the files
-set myApp to "Doxie" - the app to call (in case of version name changes)
+set myApp to "Doxie" -- the app to call (in case of version name changes)
 set fName to "/Users/<username>/<yourpath>/" -- watch folder path that the script is attached to
 
 
