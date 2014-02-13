@@ -10,7 +10,7 @@
 -- (e.g. Dropbox, Google Drive).
 -- 
 -- 2014 Damon Hamm
--- Last update 2014.1.18
+-- Last update 2014.2.12
 
 
 -- initialize the main variables and run
@@ -51,12 +51,11 @@ on runMyApp(myApp, destinationFolder)
 	try
 		set exitloop to 0
 		tell application "System Events" to tell process myApp
-			set exitloop to 0
-			log "import timer exitloop = " & (exitloop)
-			
 			set frontmost to true
 			
 			-- pause to let importing finish
+			set exitloop to 0
+			log "import timer exitloop = " & (exitloop)
 			repeat while exists sheet "Doxie Import" of window myApp
 				delay 0.2
 				set exitloop to exitloop + 1
@@ -71,51 +70,50 @@ on runMyApp(myApp, destinationFolder)
 		tell application "System Events" to tell process myApp
 			set frontmost to true
 			repeat until frontmost is true
-				delay 0.1
+				delay 0.2
 			end repeat
+			delay 0.5
 			-- Select All (Press ⌘A)
 			keystroke "a" using {command down}
 		end tell
 		
-		delay 0.5
-		
 		tell application "System Events" to tell process myApp
 			set frontmost to true
 			repeat until frontmost is true
-				delay 0.1
+				delay 0.2
 			end repeat
 			-- Select save as PDF b&w with OCR (Press ⌥⌘S)
-			keystroke "s" using {option down, command down}
-			
 			-- pause until save dialog appears
 			set exitloop to 0
 			repeat until exists sheet 1 of window myApp
-				delay 0.1
+				keystroke "s" using {option down, command down}
+				delay 0.2
 				set exitloop to exitloop + 1
-				log "save not available exitloop = " & (exitloop)
+				log "waiting for save window to appear, exitloop = " & (exitloop)
 				if exitloop ≥ 50 then
-					log "save function not available timeout"
+					log "timeout - save function not available"
 					return
 				end if
 			end repeat
 		end tell
+		
 		tell application "System Events" to tell process myApp
 			set frontmost to true
 			repeat until frontmost is true
-				delay 0.1
+				delay 0.2
 			end repeat
+			
 			-- Press ⌘⇧g to open open the finder folder selector
 			tell window myApp
 				keystroke "g" using {command down, shift down}
-				
 				-- wait for the finder folder sheet to open
 				set exitloop to 0
-				repeat until exists sheet 1
+				repeat until exists sheet 0
 					delay 0.2
 					set exitloop to exitloop + 1
 					log "open finder folder exitloop = " & (exitloop)
 					if exitloop ≥ 50 then
-						log "open finder folder timeout"
+						log "timeout - open finder folder"
 						return
 					end if
 				end repeat
@@ -129,6 +127,7 @@ on runMyApp(myApp, destinationFolder)
 					-- wait for the sheet to close
 					set exitcount to 0
 					repeat while exists sheet 1
+						click button "Go" of sheet 1
 						delay 0.2
 						set exitloop to exitloop + 1
 						if exitloop ≥ 50 then
@@ -167,7 +166,7 @@ on runMyApp(myApp, destinationFolder)
 		tell application "System Events" to tell process myApp
 			set frontmost to true
 			repeat until frontmost is true
-				delay 0.1
+				delay 0.2
 			end repeat
 			
 			-- close the app using keystrokes
@@ -187,3 +186,4 @@ on runMyApp(myApp, destinationFolder)
 		end tell
 	end try
 end runMyApp
+
