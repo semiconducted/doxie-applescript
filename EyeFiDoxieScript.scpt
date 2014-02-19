@@ -10,14 +10,13 @@
 -- (e.g. Dropbox, Google Drive).
 -- 
 -- 2014 Damon Hamm
--- Last update 2014.2.12
+-- Last update 2014.2.13
 
 
 --***** change these variables to fit your needs *****
-set destinationFolder to "/Users/<username>/<yourpath>/" -- where to save the files
+set destinationFolder to "/Users/dhammy0110/GDrive/receipts_biz/" -- where to save the files
 set myApp to "Doxie" -- the app to call (in case of version name changes)
-set fName to "/Users/<username>/<yourpath>/" -- watch folder path that the script is attached to
-
+set fName to "/Users/dhammy0110/Pictures/Doxie Eye-Fi/" -- watch folder path that the script is attached to
 
 -- when triggered by a folder action, 
 -- test for all transfers to be complete, then run main program
@@ -31,7 +30,7 @@ end if
 -- wait until all files are finished transferring
 on folderReady(fName)
 	set startSize to size of (info for fName) --get current folder size
-	delay 15
+	--	delay 15
 	set newSize to size of (info for fName)
 	repeat until startSize is equal to newSize --loop until equal
 		set startSize to newSize --reset current size
@@ -55,7 +54,6 @@ on runMyApp(myApp, destinationFolder)
 			
 			-- pause to let importing finish
 			set exitloop to 0
-			log "import timer exitloop = " & (exitloop)
 			repeat while exists sheet "Doxie Import" of window myApp
 				delay 0.2
 				set exitloop to exitloop + 1
@@ -125,7 +123,7 @@ on runMyApp(myApp, destinationFolder)
 					click button "Go" of sheet 1
 					
 					-- wait for the sheet to close
-					set exitcount to 0
+					set exitloop to 0
 					repeat while exists sheet 1
 						click button "Go" of sheet 1
 						delay 0.2
@@ -137,20 +135,23 @@ on runMyApp(myApp, destinationFolder)
 					end repeat
 				end tell
 				
-				-- save the sheet using whichever button is present at the time (for some reason it varies)
+				-- save the sheet using whichever button is present at the time (for some reason I saw both and don't feel like figuring out why)
 				if exists (button "Choose" of sheet 1) then
 					click button "Choose" of sheet 1
-				else
+				else if exists (button "Save" of sheet 1) then
 					click button "Save" of sheet 1
 				end if
 				
 				delay 0.2
-				--get entire contents of front window
-				-- get every UI element
 				
-				set exitcount to 0
+				-- test if the 'replace file?' window is open
+				if exists (button "Replace" of sheet 1 of sheet 1) then
+					log "replace dialog open - need user input"
+					return -- bail out and let the user choose what to do
+				end if
 				
 				-- wait for saving to complete
+				set exitloop to 0
 				repeat while exists sheet "Saving Scans..."
 					log "save function running, exitloop = " & exitloop
 					delay 0.2
@@ -170,12 +171,19 @@ on runMyApp(myApp, destinationFolder)
 			end repeat
 			
 			-- close the app using keystrokes
+			delay 0.2
 			keystroke "q" using {command down}
 			
-			-- wait for quit dialog to appear, let system handle timeout
+			-- wait for quit dialog to appear
+			set exitloop to 0
 			repeat until exists button "Delete" of sheet 1 of window myApp
 				log "waiting for quit & delete options dialog"
 				delay 0.2
+				set exitloop to exitloop + 1
+				if exitloop ≥ 1500 then
+					log "quit function timeout"
+					return
+				end if
 			end repeat
 			set frontmost to true
 			
@@ -186,4 +194,3 @@ on runMyApp(myApp, destinationFolder)
 		end tell
 	end try
 end runMyApp
-
