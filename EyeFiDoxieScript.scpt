@@ -30,7 +30,7 @@ end if
 -- wait until all files are finished transferring
 on folderReady(fName)
 	set startSize to size of (info for fName) --get current folder size
-	--	delay 15
+	delay 20
 	set newSize to size of (info for fName)
 	repeat until startSize is equal to newSize --loop until equal
 		set startSize to newSize --reset current size
