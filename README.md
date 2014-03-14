@@ -11,16 +11,29 @@ Enjoy!
 
 
 Installation:
+
 1. Open the file DoxieProcessScript.scpt in a text editor.
+
 2. Change the path variables at the top of the script to match the folders you want to use. 
-2. Put the file DoxieProcessScript.scpt somewhere on your computer where you won't move it. I suggest "/Users/<yourusername>/Library/Workflows/Applications/Folder Actions/"
-2. Open Automator.
-3. Create a new Folder Action.
-4. At the very top, set "Folder Action received files and folders added to" to  ~/Pictures/DoxieEye-Fi.
-4. Add the action "Run AppleScript" from the library on the left to the main window on the right.
-5. Put the code:
+
+3. Put the file DoxieProcessScript.scpt somewhere on your computer where you won't move it. I suggest "/Users/<yourusername>/Library/Workflows/Applications/Folder Actions/"
+
+4. Open Automator.
+
+5. Create a new Folder Action.
+
+6. At the very top, set "Folder Action received files and folders added to" to  ~/Pictures/DoxieEye-Fi.
+
+7. Add the action "Run AppleScript" from the library on the left to the main window on the right.
+
+8. Put the code: 
+
 run script ("/path-to-your-script" as POSIX file)
-in the Folder Action.
-e.g. run script ("/Users/username/Library/Workflows/Applications/Folder Actions/DoxieProcessScript.scpt" as POSIX file)
-7. Save everything.
-8. Launch the program 'Folder Actions Setup" to double check the folder action is currently enabled.
+
+in the Folder Action. E.g. 
+
+run script ("/Users/username/Library/Workflows/Applications/Folder Actions/DoxieProcessScript.scpt" as POSIX file)
+
+9. Save everything.
+
+10. Launch the program 'Folder Actions Setup" to double check the folder action is currently enabled.
